@@ -6,6 +6,7 @@ import com.pulseops.job.repository.JobRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -24,5 +25,13 @@ public class JobService {
         job.setStatus(JobStatus.PENDING);
         job.setCreatedAt(LocalDateTime.now());
         return jobRepository.save(job);
+    }
+
+    public Job getJobById(UUID id) {
+        return jobRepository.findById(id).orElse(null);
+    }
+
+    public List<Job> getAllJobs() {
+        return jobRepository.findAll();
     }
 }
