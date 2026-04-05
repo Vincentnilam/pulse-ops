@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAllJobs } from "../api/jobs";
 import type { Job } from "../types/job";
+import JobTable from "../components/JobTable";
 
 export default function JobsPage() {
 
@@ -21,22 +22,29 @@ export default function JobsPage() {
   }, []);
 
   return (
-    <div>
-      <h1>Jobs Page</h1>
-      <p>This is where the list of jobs will be displayed.</p>
-      {loading ? (
-        <p>Loading jobs...</p>
-      ) : error ? (
-        <p>{error}</p>
-      ) : jobs.length > 0 ? (
-        <ul>
-          {jobs.map((job) => (
-            <li key={job.id}>{job.type}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>No jobs available.</p>
-      )}
+    <div className="min-h-screen bg-slate-50 px-4 py-8">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+            PulseOps Jobs
+          </h1>
+          <p className="mt-2 text-sm text-slate-600">
+            View and track background jobs.
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          {loading ? (
+            <p className="text-sm text-slate-600">Loading jobs...</p>
+          ) : error ? (
+            <p className="text-sm font-medium text-red-600">{error}</p>
+          ) : jobs.length > 0 ? (
+            <JobTable jobs={jobs} />
+          ) : (
+            <p className="text-sm text-slate-600">No jobs available.</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
