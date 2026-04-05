@@ -1,4 +1,5 @@
 import type { Job } from "../types/job";
+import StatusBadge from "./StatusBadge";
 
 export default function JobTable({ jobs }: { jobs: Job[] }) {
   return (
@@ -31,7 +32,7 @@ export default function JobTable({ jobs }: { jobs: Job[] }) {
                 {job.type}
               </td>
               <td className="px-4 py-3 text-sm text-slate-700">
-                {job.status}
+                <StatusBadge status={job.status} />
               </td>
               <td className="px-4 py-3 text-sm text-slate-600">
                 {new Date(job.createdAt).toLocaleString()}
