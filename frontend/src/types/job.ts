@@ -8,3 +8,9 @@ export interface Job {
 export interface CreateJobRequest {
   type: string
 }
+
+export interface JobStatusUpdateMessage {
+  jobId: string
+  status: string
+  type: string
+}
