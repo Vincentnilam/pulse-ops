@@ -3,6 +3,7 @@ import { createJob, getAllJobs } from "../api/jobs";
 import type { CreateJobRequest, Job } from "../types/job";
 import JobTable from "../components/JobTable";
 import CreateJobForm from "../components/CreateJobForm";
+import { connectToJobUpdates } from "../websocket/jobsWebSocket";
 
 export default function JobsPage() {
 
@@ -25,6 +26,22 @@ export default function JobsPage() {
     }).finally(() => {
       setLoading(false);
     });
+  }, []);
+
+  useEffect(() => {
+    const disconnect = connectToJobUpdates((message) => {
+      setJobs((prevJobs) =>
+        prevJobs.map((job) =>
+          job.id === message.jobId
+            ? { ...job, status: message.status, type: message.type }
+            : job
+        )
+      );
+    });
+
+    return () => {
+      disconnect();
+    };
   }, []);
 
   return (
