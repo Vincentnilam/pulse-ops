@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
-import { getAllJobs } from "../api/jobs";
-import type { Job } from "../types/job";
+import { createJob, getAllJobs } from "../api/jobs";
+import type { CreateJobRequest, Job } from "../types/job";
 import JobTable from "../components/JobTable";
+import CreateJobForm from "../components/CreateJobForm";
 
 export default function JobsPage() {
 
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  const handleCreateJob = async (data: CreateJobRequest) => {
+    const createdJob = await createJob(data);
+    setJobs((prev) => [createdJob, ...prev]);
+  };
 
   useEffect(() => {
     // Fetch jobs from the API and set the state
@@ -32,6 +38,8 @@ export default function JobsPage() {
             View and track background jobs.
           </p>
         </div>
+
+        <CreateJobForm onSubmit={handleCreateJob} />
 
         <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
           {loading ? (
